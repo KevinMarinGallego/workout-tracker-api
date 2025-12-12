@@ -5,7 +5,8 @@ const {
   getUserById,
   createUser,
   updateUser,
-  partialUpdateUser
+  partialUpdateUser,
+  deleteUser
 } = require('../../controllers/users.controller'); // Ajusta la ruta si es necesario
 
 const router = express.Router();
@@ -16,5 +17,6 @@ router.get('/:id', getUserById);
 router.post('/', createUser);
 router.put('/:id', updateUser);
 router.patch('/:id', partialUpdateUser);
+router.delete('/:id', deleteUser);
 
 module.exports = router;
