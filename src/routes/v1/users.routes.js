@@ -1,19 +1,16 @@
+
 const express = require('express');
 const {
- getAllUsers,
- getUserById
+  getAllUsers,
+  getUserById,
+  createUser,            
 } = require('../../controllers/users.controller');
+
 const router = express.Router();
 
- //RUTAS GET DE USERS
-
-// GET /api/v1/users
-//Obtener lista de usuarios con filtros opcionales
-
+// RUTAS GET DE USERS
 router.get('/', getAllUsers);
-
-//GET /api/v1/users/:id
-//Obtener un usuario por ID
-
 router.get('/:id', getUserById);
+router.post('/', createUser);
+
 module.exports = router;
