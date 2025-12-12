@@ -3,14 +3,18 @@ const express = require('express');
 const {
   getAllUsers,
   getUserById,
-  createUser,            
-} = require('../../controllers/users.controller');
+  createUser,
+  updateUser,
+  partialUpdateUser
+} = require('../../controllers/users.controller'); // Ajusta la ruta si es necesario
 
 const router = express.Router();
 
-// RUTAS GET DE USERS
+// RUTAS DE USERS
 router.get('/', getAllUsers);
 router.get('/:id', getUserById);
 router.post('/', createUser);
+router.put('/:id', updateUser);
+router.patch('/:id', partialUpdateUser);
 
 module.exports = router;
