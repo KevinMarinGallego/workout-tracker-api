@@ -54,9 +54,25 @@ const getAllExercises = (req, res) => {
  return res.status(500).json({ success: false, error: 'Error al obtener ejercicio', message: error.message });
 };
 
+const createExercise = (req, res) => {
+ return res.status(501).json({ success: false, error: 'TODO: POST /exercises' });
+};
+const updateExercise = (req, res) => {
+ return res.status(501).json({ success: false, error: 'TODO: PUT /exercises/:id' });
+};
+const partialUpdateExercise = (req, res) => {
+ return res.status(501).json({ success: false, error: 'TODO: PATCH /exercises/:id' });
+};
+const deleteExercise = (req, res) => {
+ return res.status(501).json({ success: false, error: 'TODO: DELETE /exercises/:id' });
+};
 
-    module.exports = {
-      getAllExercises,
-      getExerciseById,
-    };
-  };
+
+module.exports = {
+ getAllExercises,
+ getExerciseById,
+ createExercise,
+ updateExercise,
+ partialUpdateExercise,
+ deleteExercise
+};}};
