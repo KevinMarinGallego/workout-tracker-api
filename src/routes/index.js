@@ -7,6 +7,7 @@ const v1Routes = require('./v1');
 //Cofigurar rutas versionadas
 router.use('/v1', v1Routes);
 
+
 //Ruta base para información de la API
 router.get("/", (req, res) => {
     res.json({
