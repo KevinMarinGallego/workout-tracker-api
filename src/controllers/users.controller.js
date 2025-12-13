@@ -1,20 +1,19 @@
-
 // ESTADO EN MEMORIA
 let users = [
   {
-    id: 'b42f53fa-7b30-4b91-8d36-dc1c6ef27611',
-    name: 'Carlos Navia',
-    email: 'carlos@example.com',
-    role: 'admin',
-    createdAt: '2025-09-12T12:00:00Z'
+    id: "300645978",
+    name: "Carlos Navia",
+    email: "carlos@example.com",
+    role: "admin",
+    createdAt: "2025-09-12T12:00:00Z",
   },
   {
-    id: 'a12f53fa-7b30-4b91-8d36-dc1c6ef27622',
-    name: 'Ana Torres',
-    email: 'ana@example.com',
-    role: 'user',
-    createdAt: '2025-09-13T12:00:00Z'
-  }
+    id: "4561212321354",
+    name: "Ana Torres",
+    email: "ana@example.com",
+    role: "user",
+    createdAt: "2025-09-13T12:00:00Z",
+  },
 ];
 
 // CONTROLADOR: GET ALL USERS
@@ -23,60 +22,60 @@ let users = [
  * Query params: role, search
  */
 const getAllUsers = (req, res) => {
- try {
- const { role, search, limit } = req.query;
+  try {
+    const { role, search, limit } = req.query;
 
-  //Validar límite
- const validLimit = Math.min(parseInt(limit) || 100, 100);
+    //Validar límite
+    const validLimit = Math.min(parseInt(limit) || 100, 100);
 
-  //Validar rol si se proporciona
- const validRoles = ['admin', 'user'];
- if (role && !validRoles.includes(role)) {
- return res.status(400).json({
- success: false,
- error: `role debe ser uno de: ${validRoles.join(', ')}`
- });
- }
+    //Validar rol si se proporciona
+    const validRoles = ["admin", "user"];
+    if (role && !validRoles.includes(role)) {
+      return res.status(400).json({
+        success: false,
+        error: `role debe ser uno de: ${validRoles.join(", ")}`,
+      });
+    }
 
- let result = users;
+    let result = users;
 
- if (role) {
- result = result.filter(u => u.role === role);
- }
-//Haz el commit:
-//✅ Commit 6 completado
-//COMMIT 7: Actualizar documentación
-//Archivos a modificar:
+    if (role) {
+      result = result.filter((u) => u.role === role);
+    }
+    //Haz el commit:
+    //✅ Commit 6 completado
+    //COMMIT 7: Actualizar documentación
+    //Archivos a modificar:
 
- if (search) {
- if (search.length < 1) {
- return res.status(400).json({
- success: false,
- error: 'search debe tener al menos 1 carácter'
- });
- }
- result = result.filter(u =>
- u.name.toLowerCase().includes(search.toLowerCase())
- );
- }
+    if (search) {
+      if (search.length < 1) {
+        return res.status(400).json({
+          success: false,
+          error: "search debe tener al menos 1 carácter",
+        });
+      }
+      result = result.filter((u) =>
+        u.name.toLowerCase().includes(search.toLowerCase())
+      );
+    }
 
- result = result.slice(0, validLimit);
+    result = result.slice(0, validLimit);
 
- res.status(200).json({
- success: true,
- data: result,
- total: result.length,
- filters: { role, search, limit: validLimit },
- timestamp: new Date().toISOString()
- });
- } catch (error) {
- res.status(500).json({
- success: false,
- error: 'Error al obtener usuarios',
- message: error.message
- });
- }
-}
+    res.status(200).json({
+      success: true,
+      data: result,
+      total: result.length,
+      filters: { role, search, limit: validLimit },
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: "Error al obtener usuarios",
+      message: error.message,
+    });
+  }
+};
 
 // CONTROLADOR: GET USER BY ID
 /**
@@ -85,30 +84,30 @@ const getAllUsers = (req, res) => {
 const getUserById = (req, res) => {
   try {
     const { id } = req.params;
-    const user = users.find(u => u.id === id);
+    const user = users.find((u) => u.id === id);
 
     if (!user) {
       return res.status(404).json({
         success: false,
-        error: 'Usuario no encontrado'
+        error: "Usuario no encontrado",
       });
     }
 
     res.status(200).json({
       success: true,
-      data: user
+      data: user,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: 'Error al obtener usuario',
-      message: error.message
+      error: "Error al obtener usuario",
+      message: error.message,
     });
   }
 };
 
 // CONTROLADOR: CREATE USER
-const { randomUUID } = require('crypto');
+const { randomUUID } = require("crypto");
 
 const createUser = (req, res) => {
   try {
@@ -118,7 +117,7 @@ const createUser = (req, res) => {
     if (!name || !email) {
       return res.status(400).json({
         success: false,
-        error: 'name y email son requeridos'
+        error: "name y email son requeridos",
       });
     }
 
@@ -127,16 +126,16 @@ const createUser = (req, res) => {
     if (!emailRegex.test(email)) {
       return res.status(400).json({
         success: false,
-        error: 'El email no tiene un formato válido'
+        error: "El email no tiene un formato válido",
       });
     }
 
     // Validación: email único
-    const emailExists = users.some(u => u.email === email.toLowerCase());
+    const emailExists = users.some((u) => u.email === email.toLowerCase());
     if (emailExists) {
       return res.status(400).json({
         success: false,
-        error: 'El email ya está registrado'
+        error: "El email ya está registrado",
       });
     }
 
@@ -145,22 +144,22 @@ const createUser = (req, res) => {
       id: randomUUID(), // ID robusto
       name: name.trim(),
       email: email.toLowerCase(),
-      role: role || 'user',
-      createdAt: new Date().toISOString()
+      role: role || "user",
+      createdAt: new Date().toISOString(),
     };
 
     users.push(newUser);
 
     res.status(201).json({
       success: true,
-      message: 'Usuario creado exitosamente',
-      data: newUser
+      message: "Usuario creado exitosamente",
+      data: newUser,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: 'Error al crear usuario',
-      message: error.message
+      error: "Error al crear usuario",
+      message: error.message,
     });
   }
 };
@@ -174,7 +173,7 @@ const updateUser = (req, res) => {
     if (!name || !email || !role) {
       return res.status(400).json({
         success: false,
-        error: 'name, email y role son requeridos'
+        error: "name, email y role son requeridos",
       });
     }
 
@@ -182,16 +181,16 @@ const updateUser = (req, res) => {
     if (!emailRegex.test(email)) {
       return res.status(400).json({
         success: false,
-        error: 'El email no tiene un formato válido'
+        error: "El email no tiene un formato válido",
       });
     }
 
-    const index = users.findIndex(u => u.id === id);
+    const index = users.findIndex((u) => u.id === id);
 
     if (index === -1) {
       return res.status(404).json({
         success: false,
-        error: 'Usuario no encontrado'
+        error: "Usuario no encontrado",
       });
     }
 
@@ -199,19 +198,19 @@ const updateUser = (req, res) => {
       ...users[index],
       name: name.trim(),
       email: email.toLowerCase(),
-      role
+      role,
     };
 
     res.status(200).json({
       success: true,
-      message: 'Usuario actualizado exitosamente',
-      data: users[index]
+      message: "Usuario actualizado exitosamente",
+      data: users[index],
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: 'Error al actualizar usuario',
-      message: error.message
+      error: "Error al actualizar usuario",
+      message: error.message,
     });
   }
 };
@@ -225,16 +224,16 @@ const partialUpdateUser = (req, res) => {
     if (!updates || Object.keys(updates).length === 0) {
       return res.status(400).json({
         success: false,
-        error: 'Debes proporcionar al menos un campo para actualizar'
+        error: "Debes proporcionar al menos un campo para actualizar",
       });
     }
 
-    const index = users.findIndex(u => u.id === id);
+    const index = users.findIndex((u) => u.id === id);
 
     if (index === -1) {
       return res.status(404).json({
         success: false,
-        error: 'Usuario no encontrado'
+        error: "Usuario no encontrado",
       });
     }
 
@@ -244,55 +243,55 @@ const partialUpdateUser = (req, res) => {
 
     users[index] = {
       ...users[index],
-      ...updates
+      ...updates,
     };
 
     res.status(200).json({
       success: true,
-      message: 'Usuario actualizado parcialmente',
-      data: users[index]
+      message: "Usuario actualizado parcialmente",
+      data: users[index],
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: 'Error al actualizar usuario',
-      message: error.message
+      error: "Error al actualizar usuario",
+      message: error.message,
     });
   }
 };
 
 // CONTROLADOR: DELETE USER
 const deleteUser = (req, res) => {
- try {
- const { id } = req.params;
+  try {
+    const { id } = req.params;
 
- const index = users.findIndex(u => u.id === id);
+    const index = users.findIndex((u) => u.id === id);
 
- if (index === -1) {
- return res.status(404).json({
- success: false,
- error: 'Usuario no encontrado'
- });
- }
+    if (index === -1) {
+      return res.status(404).json({
+        success: false,
+        error: "Usuario no encontrado",
+      });
+    }
 
- const deletedUser = users.splice(index, 1)[0];
+    const deletedUser = users.splice(index, 1)[0];
 
- res.status(200).json({
- success: true,
- message: 'Usuario eliminado exitosamente',
- data: {
- id: deletedUser.id,
- name: deletedUser.name,
- email: deletedUser.email
- }
- });
- } catch (error) {
- res.status(500).json({
- success: false,
- error: 'Error al eliminar usuario',
- message: error.message
- });
- }
+    res.status(200).json({
+      success: true,
+      message: "Usuario eliminado exitosamente",
+      data: {
+        id: deletedUser.id,
+        name: deletedUser.name,
+        email: deletedUser.email,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: "Error al eliminar usuario",
+      message: error.message,
+    });
+  }
 };
 
 module.exports = {
@@ -301,5 +300,5 @@ module.exports = {
   createUser,
   updateUser,
   partialUpdateUser,
-  deleteUser
+  deleteUser,
 };
