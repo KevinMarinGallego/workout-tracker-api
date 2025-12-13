@@ -42,6 +42,18 @@ const getAllExercises = (req, res) => {
       });
   }
 
+  const getExerciseById = (req, res) => {
+ try {
+ const { id } = req.params;
+ const exercise = exercises.find(e => e.id === id);
+ if (!exercise) {
+ return res.status(404).json({ success: false, error: 'Ejercicio no encontrado' });
+ }
+ return res.status(200).json({ success: true, data: exercise });
+ } catch (error) {
+ return res.status(500).json({ success: false, error: 'Error al obtener ejercicio', message: error.message });
+};
+
 
     module.exports = {
       getAllExercises,
