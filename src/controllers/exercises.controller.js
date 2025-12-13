@@ -55,8 +55,33 @@ const getAllExercises = (req, res) => {
 };
 
 const createExercise = (req, res) => {
- return res.status(501).json({ success: false, error: 'TODO: POST /exercises' });
+ try {
+ const { name, description, category, muscleGroup } = req.body;
+ if (!name || !description || !category || !muscleGroup) {
+ return res.status(400).json({
+ success: false,
+ error: 'name, description, category y muscleGroup son requeridos'
+ });
+ }
+ const newExercise = {
+ id: randomUUID(),
+ name: String(name).trim(),
+ description: String(description).trim(),
+ category: String(category).trim(),
+ muscleGroup: String(muscleGroup).trim(),
+ createdAt: new Date().toISOString()
+ };
+ exercises.push(newExercise);
+ return res.status(201).json({
+ success: true,
+ message: 'Ejercicio creado',
+ data: newExercise
+ });
+ } catch (error) {
+ return res.status(500).json({ success: false, error: 'Error al crear ejercicio', message: error.message });
 };
+
+
 const updateExercise = (req, res) => {
  return res.status(501).json({ success: false, error: 'TODO: PUT /exercises/:id' });
 };
@@ -66,6 +91,7 @@ const partialUpdateExercise = (req, res) => {
 const deleteExercise = (req, res) => {
  return res.status(501).json({ success: false, error: 'TODO: DELETE /exercises/:id' });
 };
+
 
 
 module.exports = {
