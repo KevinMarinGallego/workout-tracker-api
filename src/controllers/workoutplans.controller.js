@@ -78,9 +78,82 @@ const getWorkoutPlanById = (req, res) => {
   }
 };
 
+const { randomUUID } = require('crypto');
+function isValidExerciseItem(item) {
+ return item &&
+ typeof item.exerciseId === 'string' &&
+ typeof item.name === 'string' &&
+ Number.isFinite(Number(item.sets)) && Number(item.sets) > 0 &&
+ Number.isFinite(Number(item.reps)) && Number(item.reps) > 0 &&
+ Number.isFinite(Number(item.weight)) && Number(item.weight) >= 0 &&
+ typeof item.notes === 'string';
+}
+
+const { randomUUID } = require('crypto');
+
+function isValidExerciseItem(item) {
+  return item &&
+    item.exerciseId &&
+    item.name &&
+    item.sets !== undefined &&
+    item.reps !== undefined;
+}
+
 const createWorkoutPlan = (req, res) => {
- return res.status(501).json({ success: false, error: 'TODO: POST /workoutplans' });
+  try {
+    const { userId, title, description, exercises } = req.body;
+
+    if (!userId || !title || !description || !Array.isArray(exercises)) {
+      return res.status(400).json({
+        success: false,
+        error: 'userId, title, description y exercises son obligatorios'
+      });
+    }
+
+    for (const it of exercises) {
+      if (!isValidExerciseItem(it)) {
+        return res.status(400).json({
+          success: false,
+          error: 'Cada ejercicio debe tener exerciseId, name, sets y reps'
+        });
+      }
+    }
+
+    const now = new Date().toISOString();
+    const newPlan = {
+      id: randomUUID(),
+      userId: String(userId).trim(),
+      title: String(title).trim(),
+      description: String(description).trim(),
+      createdAt: now,
+      updatedAt: now,
+      exercises: exercises.map(e => ({
+        exerciseId: String(e.exerciseId).trim(),
+        name: String(e.name).trim(),
+        sets: Number(e.sets),
+        reps: Number(e.reps),
+        weight: Number(e.weight),
+        notes: String(e.notes)
+      }))
+    };
+
+    workoutPlans.push(newPlan);
+
+    return res.status(201).json({
+      success: true,
+      message: 'Workout plan creado',
+      data: newPlan
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      error: 'Error al crear workout plan',
+      message: error.message
+    });
+  }
 };
+
+
 const updateWorkoutPlan = (req, res) => {
  return res.status(501).json({ success: false, error: 'TODO: PUT /workoutplans/:id' });
 };
