@@ -78,26 +78,22 @@ const getWorkoutPlanById = (req, res) => {
   }
 };
 
-const { randomUUID } = require('crypto');
-function isValidExerciseItem(item) {
- return item &&
- typeof item.exerciseId === 'string' &&
- typeof item.name === 'string' &&
- Number.isFinite(Number(item.sets)) && Number(item.sets) > 0 &&
- Number.isFinite(Number(item.reps)) && Number(item.reps) > 0 &&
- Number.isFinite(Number(item.weight)) && Number(item.weight) >= 0 &&
- typeof item.notes === 'string';
-}
-
-const { randomUUID } = require('crypto');
 
 function isValidExerciseItem(item) {
-  return item &&
-    item.exerciseId &&
-    item.name &&
-    item.sets !== undefined &&
-    item.reps !== undefined;
+  if (!item) return false;
+
+  const hasRequiredFields =
+    typeof item.exerciseId === 'string' &&
+    typeof item.name === 'string' &&
+    Number.isFinite(Number(item.sets)) && Number(item.sets) > 0 &&
+    Number.isFinite(Number(item.reps)) && Number(item.reps) > 0;
+
+  const weightValid = item.weight === undefined || (Number.isFinite(Number(item.weight)) && Number(item.weight) >= 0);
+  const notesValid = item.notes === undefined || typeof item.notes === 'string';
+
+  return hasRequiredFields && weightValid && notesValid;
 }
+
 
 const createWorkoutPlan = (req, res) => {
   try {

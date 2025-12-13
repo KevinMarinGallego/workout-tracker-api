@@ -2,15 +2,14 @@
 const express = require('express');
 const router = express.Router();
 
-// IMPORTA correctamente el router de usuarios
-const usersRoutes = require('./users.routes'); // <-- esto faltaba
+// Importa los routers
+const usersRoutes = require('./users.routes');
 const exercisesRoutes = require('./exercises.routes');
-const workoutsRoutes = require('./workouts.routes');
+const workoutplansRoutes = require('./workoutplans.routes'); // <-- Añadido
 
-
-
+// Monta las rutas
 router.use('/users', usersRoutes);
 router.use('/exercises', exercisesRoutes);
-router.use('/workouts', workoutsRoutes);
+router.use('/workoutplans', workoutplansRoutes);
 
 module.exports = router;

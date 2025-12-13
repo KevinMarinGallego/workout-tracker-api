@@ -1,11 +1,12 @@
 const express = require('express');
 const {
- getAllWorkoutPlans,
- getWorkoutPlanById,
- createWorkoutPlan,
- updateWorkoutPlan,
- partialUpdateWorkoutPlan,
- deleteWorkoutPlan,
+getAllWorkoutPlans,
+getWorkoutPlanById,
+createWorkoutPlan,
+updateWorkoutPlan,
+partialUpdateWorkoutPlan,
+deleteWorkoutPlan,
+
 } = require('../../controllers/workoutplans.controller');
 const router = express.Router();
 // GET
